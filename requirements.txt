@@ -3,7 +3,9 @@ pandas
 numpy
 scikit-learn
 spacy
+en-core-web-sm
 pdfplumber
 python-docx
 reportlab
 Pillow
+openpyxl
