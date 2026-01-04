@@ -1,35 +1,22 @@
-🤖 AI-Powered Resume Screening Tool
+AI Powered Resume Screening Tool
 
-An intelligent AI-powered resume screening application that automatically analyzes resumes against a given job description, extracts key information, and ranks candidates based on skill match percentage.
-Built to save recruiters time, reduce bias, and improve hiring efficiency.
+An AI powered resume screening application that automatically analyzes resumes against a given job description, extracts key candidate information, and ranks resumes based on skill matching percentage.
 
-🚀 Features
+This tool is designed to help recruiters and hiring teams save time, reduce manual effort, and shortlist candidates more efficiently using NLP and machine learning techniques.
 
-📄 Multi-Format Resume Parsing
+Features
 
-Supports PDF and DOCX
+Upload and analyze multiple resumes (PDF and DOCX)
 
-OCR fallback for scanned resumes
+Automatic resume text extraction
 
-🧠 AI / NLP-Based Skill Matching
+AI based skill matching with job description
 
-Uses NLP + TF-IDF + cosine similarity
+Matching percentage calculation
 
-Weighted skill ontology for accurate scoring
+Resume ranking system
 
-📊 Candidate Ranking System
-
-Calculates matching percentage
-
-Ranks resumes automatically
-
-🔍 Detailed Skill Analysis
-
-Matched skills
-
-Missing skills
-
-👤 Automatic Candidate Info Extraction
+Extracts candidate details:
 
 Name
 
@@ -37,16 +24,47 @@ Email
 
 Phone number
 
-🖥️ Interactive Web UI
+Displays matched and missing skills
 
-Built with Streamlit
+Clean and interactive Streamlit interface
 
-Drag-and-drop resume upload
+Cloud deployable (Streamlit Cloud compatible)
 
-Real-time analysis results
+Tech Stack
 
-☁️ Cloud-Deployable
+Python
 
-Ready for Streamlit Cloud
+Streamlit
 
-Local & production compatible
+spaCy (NLP)
+
+Scikit-learn
+
+TF-IDF Vectorizer
+
+
+ai_resume_screening_tool/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+│
+├── utils/
+│   ├── pdf_parser.py
+│   ├── text_cleaner.py
+│   ├── skill_matcher.py
+│   ├── info_extractor.py
+│
+├── assets/
+│   └── How_it_works.png
+│
+└── data/
+    └── sample_resumes/
+
+Cosine Similarity
+
+pdfplumber
+
+python-docx
+
+Tesseract OCR (for scanned resumes)
