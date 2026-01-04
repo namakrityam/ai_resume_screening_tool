@@ -15,9 +15,7 @@ import spacy
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
-    from spacy.cli import download
-    download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
+    nlp = None
 
 
 
@@ -857,24 +855,26 @@ def extract_candidate_name(text, metadata=None):
                     return line.title()
     
     # STRATEGY 3: NER with spaCy
+# STRATEGY 3: NER with spaCy (SAFE GUARD)
+if nlp:
     doc = nlp(text[:3000])
-    
+
     for ent in doc.ents:
         if ent.label_ == "PERSON":
             low = ent.text.lower()
-            
+
             if any(loc in low for loc in LOCATION_KEYWORDS):
                 continue
-            
+
             if any(header in low for header in INVALID_HEADERS):
                 continue
-            
+
             words = ent.text.split()
             if 2 <= len(words) <= 4 and not re.search(r'\d', ent.text):
                 if all(w[0].isupper() and w[1:].islower() for w in words if len(w) > 1):
                     return ent.text.title()
     
-    return "Unknown Candidate"
+    
 
 def extract_name_by_font(font_data, text):
     """
