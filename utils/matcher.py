@@ -8,13 +8,14 @@ from utils.pdf_parser import extract_text
 from utils.text_cleaner import clean_text
 
 # ===============================
-# NLP
-# =============================
+# NLP - FIXED LOADING
+# ===============================
 import spacy
 
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
+    print("⚠️ spaCy model not found. Name extraction will use fallback methods.")
     nlp = None
 
 
@@ -854,27 +855,32 @@ def extract_candidate_name(text, metadata=None):
                 if not any(w.lower() in common_words for w in words):
                     return line.title()
     
-# STRATEGY 3: NER with spaCy (SAFE GUARD)
+    # STRATEGY 3: NER with spaCy (SAFE GUARD) - Only if model is loaded
     if nlp:
-        doc = nlp(text[:3000])
+        try:
+            doc = nlp(text[:3000])
 
-        for ent in doc.ents:
-            if ent.label_ == "PERSON":
-                low = ent.text.lower()
+            for ent in doc.ents:
+                if ent.label_ == "PERSON":
+                    low = ent.text.lower()
 
-                if any(loc in low for loc in LOCATION_KEYWORDS):
-                    continue
+                    if any(loc in low for loc in LOCATION_KEYWORDS):
+                        continue
 
-                if any(header in low for header in INVALID_HEADERS):
-                    continue
+                    if any(header in low for header in INVALID_HEADERS):
+                        continue
 
-                words = ent.text.split()
-                if 2 <= len(words) <= 4 and not re.search(r'\d', ent.text):
-                    if all(
-                        w[0].isupper() and w[1:].islower()
-                        for w in words if len(w) > 1
-                    ):
-                        return ent.text.title()
+                    words = ent.text.split()
+                    if 2 <= len(words) <= 4 and not re.search(r'\d', ent.text):
+                        if all(
+                            w[0].isupper() and w[1:].islower()
+                            for w in words if len(w) > 1
+                        ):
+                            return ent.text.title()
+        except Exception as e:
+            print(f"spaCy NER failed: {e}")
+    
+    return "Unknown Candidate"
 
 
 def extract_name_by_font(font_data, text):
@@ -939,6 +945,7 @@ def extract_name_by_font(font_data, text):
     
     return None
 
+
 def is_valid_name(name):
     """
     Validate if text is a proper name
@@ -974,6 +981,7 @@ def is_valid_name(name):
     
     return True
 
+
 # ===============================
 # SKILL EXTRACTION
 # ===============================
@@ -990,6 +998,7 @@ def extract_jd_skills(job_desc):
 
     return jd_skills
 
+
 def extract_resume_skills(resume_text, jd_skills):
     """Extract matching skills from resume"""
     text = resume_text.lower()
@@ -1001,6 +1010,7 @@ def extract_resume_skills(resume_text, jd_skills):
             found[skill] = weight
 
     return found
+
 
 # ===============================
 # MAIN ANALYZER
