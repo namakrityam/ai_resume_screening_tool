@@ -875,8 +875,7 @@ if nlp:
                     for w in words if len(w) > 1
                 ):
                     return ent.text.title()
-    
-    
+
 
 def extract_name_by_font(font_data, text):
     """
