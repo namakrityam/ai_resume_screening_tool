@@ -854,7 +854,6 @@ def extract_candidate_name(text, metadata=None):
                 if not any(w.lower() in common_words for w in words):
                     return line.title()
     
-    # STRATEGY 3: NER with spaCy
 # STRATEGY 3: NER with spaCy (SAFE GUARD)
 if nlp:
     doc = nlp(text[:3000])
@@ -871,7 +870,10 @@ if nlp:
 
             words = ent.text.split()
             if 2 <= len(words) <= 4 and not re.search(r'\d', ent.text):
-                if all(w[0].isupper() and w[1:].islower() for w in words if len(w) > 1):
+                if all(
+                    w[0].isupper() and w[1:].islower()
+                    for w in words if len(w) > 1
+                ):
                     return ent.text.title()
     
     
