@@ -471,9 +471,7 @@ st.markdown(
     }
     </style>
 
-    <div class="app-footer">
-        Developed with ❤️ by <b>NAMA Krityam</b>
-    </div>
+  #  <div class="app-footer">  Developed with ❤️ by <b>NAMA Krityam</b>  </div>
     """,
     unsafe_allow_html=True
 )
